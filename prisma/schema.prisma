@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique @db.VarChar(100)
+  password     String   @db.VarChar(150)
+  name         String   @db.VarChar(100)
+  refreshToken String?  @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  biaya        Biaya[]
+
+  @@map("users")
+}
+
+model Biaya {
+  id        Int         @id @default(autoincrement())
+  tanggal   String      @db.VarChar(50)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  kebutuhan Kebutuhan[]
+  user_id   Int
+  user      User        @relation(fields: [user_id], references: [id])
+
+  @@map("biayas")
+}
+
+model Kebutuhan {
+  id        Int      @id @default(autoincrement())
+  nama      String   @db.VarChar(100)
+  jumlah    Int      @db.Int()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  biaya_id  Int
+  biaya     Biaya    @relation(fields: [biaya_id], references: [id])
+
+  @@map("kebutuhans")
+}
