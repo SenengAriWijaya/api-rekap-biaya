@@ -2,9 +2,10 @@ import express from "express";
 import userController from "../controller/user-controller.js";
 import biayaController from "../controller/biaya-controller.js";
 import { authentication } from "../middleware/auth-middleware.js";
+import { authApiKey } from "../middleware/apiKey-middleware.js";
 
 const apiRouter = new express.Router();
-apiRouter.use(authentication);
+apiRouter.use(authentication, authApiKey);
 
 // User API
 apiRouter.get("/api/users/profile", userController.getUserController);

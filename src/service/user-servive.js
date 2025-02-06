@@ -128,21 +128,18 @@ const getUserService = async (username) => {
     where: {
       username: username,
     },
-    include: {
-      biaya: {
-        include: {
-          kebutuhan: true,
-        },
-      },
-    },
-    // select: {
-    //   id: true,
-    //   username: true,
-    //   name: true,
-    // },
     // include: {
-    //   biaya: true,
+    //   biaya: {
+    //     include: {
+    //       kebutuhan: true,
+    //     },
+    //   },
     // },
+    select: {
+      id: true,
+      username: true,
+      name: true,
+    },
   });
 
   if (!user) {
